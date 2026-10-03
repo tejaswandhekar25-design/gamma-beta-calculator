@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gamma & Beta Function Calculator — Step-by-Step Solver | PCCOE</title>
+  <meta name="description" content="Interactive Gamma and Beta function calculator with detailed step-by-step solutions. A MATLAB project by Tejas Wandhekar, PCCOE." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ========== SPLASH SCREEN ========== -->
+  <div id="splash-screen" class="splash-screen">
+    <div class="splash-particles" id="splash-particles"></div>
+    <div class="splash-content">
+      <img src="pccoe_logo.png" alt="PCCOE Logo" class="splash-logo" id="splash-logo" />
+      <h1 class="splash-college" id="splash-college">Pimpri Chinchwad College of Engineering</h1>
+      <div class="splash-divider" id="splash-divider"></div>
+      <h2 class="splash-project-title" id="splash-project-title">Gamma & Beta Function Calculator</h2>
+      <p class="splash-subtitle" id="splash-subtitle">MATLAB Project — Engineering Mathematics</p>
+      <div class="splash-credits" id="splash-credits">
+        <div class="splash-credit-group">
+          <span class="splash-credit-label">Developed By</span>
+          <span class="splash-credit-name">Tejas Wandhekar</span>
+        </div>
+        <div class="splash-credit-group">
+          <span class="splash-credit-label">Guided By</span>
+          <span class="splash-credit-name">Prof. Nishi Gupta</span>
+        </div>
+        <div class="splash-credit-group">
+          <span class="splash-credit-label">Year</span>
+          <span class="splash-credit-name">2025</span>
+        </div>
+      </div>
+      <div class="splash-loader" id="splash-loader">
+        <div class="splash-loader-bar"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== MAIN SITE (hidden until splash ends) ========== -->
+  <div id="main-site" class="main-site hidden">
+
+    <!-- Animated background particles -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Header / Hero -->
+    <header id="hero">
+      <nav id="main-nav">
+        <div class="nav-logo">
+          <img src="pccoe_logo.png" alt="PCCOE" class="nav-logo-img" />
+          <span class="logo-text">MathSolver</span>
+        </div>
+        <ul class="nav-links">
+          <li><a href="#calculator" class="nav-link">Calculator</a></li>
+          <li><a href="#theory" class="nav-link">Theory</a></li>
+          <li><a href="#examples" class="nav-link">Examples</a></li>
+          <li><a href="#matlab" class="nav-link">MATLAB</a></li>
+        </ul>
+        <!-- Dark / Light Mode Toggle -->
+        <button class="theme-toggle" id="theme-toggle" title="Toggle dark/light mode" aria-label="Toggle theme">
+          <svg class="theme-icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+          <svg class="theme-icon moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+      </nav>
+      <div class="hero-content">
+        <div class="hero-badge">MATLAB Project — PCCOE</div>
+        <h1 class="hero-title">
+          <span class="gradient-text">Gamma &amp; Beta</span><br />
+          Function Calculator
+        </h1>
+        <p class="hero-subtitle">Enter your problem and get a complete step-by-step solution instantly. Supports Gamma Γ(n), Beta B(x, y), and related integrals.</p>
+        <a href="#calculator" class="hero-cta" id="hero-cta-btn">
+          <span>Start Solving</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+      <div class="hero-formulas">
+        <div class="formula-card" id="hero-gamma-card">
+          <div class="formula-label">Gamma Function</div>
+          <div class="formula-tex" id="gamma-hero-formula"></div>
+        </div>
+        <div class="formula-card" id="hero-beta-card">
+          <div class="formula-label">Beta Function</div>
+          <div class="formula-tex" id="beta-hero-formula"></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Calculator Section -->
+    <section id="calculator" class="section">
+      <div class="section-header">
+        <h2 class="section-title">Step-by-Step <span class="gradient-text">Calculator</span></h2>
+        <p class="section-desc">Choose a function type, enter your values, and get a detailed solution.</p>
+      </div>
+
+      <div class="calculator-container">
+        <!-- Screenshot paste area — works for ALL types -->
+        <div id="global-paste-area" style="margin-bottom:20px;">
+          <button class="paste-img-btn" id="paste-img-global" title="Paste screenshot of your question">📋 Paste Question Screenshot (Auto-Detect)</button>
+          <div class="pasted-img-preview" id="paste-preview-global"></div>
+        </div>
+
+        <!-- Function type tabs -->
+        <div class="calc-tabs" id="calc-tabs">
+          <button class="calc-tab active" data-type="gamma" id="tab-gamma">Γ Gamma Function</button>
+          <button class="calc-tab" data-type="beta" id="tab-beta">B Beta Function</button>
+          <button class="calc-tab" data-type="gamma-integral" id="tab-gamma-integral">Gamma Integral</button>
+          <button class="calc-tab" data-type="beta-integral" id="tab-beta-integral">Beta Integral</button>
+        </div>
+
+        <!-- Input area -->
+        <div class="calc-input-area" id="calc-input-area">
+          <!-- Gamma input -->
+          <div class="input-group visible" id="input-gamma">
+            <label class="input-label">Enter n for Γ(n)</label>
+            <div class="input-row">
+              <div class="input-prefix" id="gamma-prefix"></div>
+              <input type="text" class="calc-input" id="gamma-n" placeholder="e.g. 5, 1/2, 3.5, -1/2" autocomplete="off" />
+            </div>
+            <p class="input-hint">Supports integers, fractions (1/2, 3/2, -1/2), and decimals.</p>
+          </div>
+
+          <!-- Beta input -->
+          <div class="input-group" id="input-beta">
+            <label class="input-label">Enter x and y for B(x, y)</label>
+            <div class="input-row dual">
+              <div class="input-field">
+                <span class="field-label">x =</span>
+                <input type="text" class="calc-input" id="beta-x" placeholder="e.g. 3, 1/2" autocomplete="off" />
+              </div>
+              <div class="input-field">
+                <span class="field-label">y =</span>
+                <input type="text" class="calc-input" id="beta-y" placeholder="e.g. 4, 3/2" autocomplete="off" />
+              </div>
+            </div>
+            <p class="input-hint">Both x and y must be positive real numbers.</p>
+          </div>
+
+          <!-- Gamma integral input (template-based) -->
+          <div class="input-group" id="input-gamma-integral">
+            <label class="input-label">Select Gamma Integral Type</label>
+            <select class="calc-select" id="gamma-int-type">
+              <option value="type1">∫₀^∞ x^A · e^(−B·x^C) dx</option>
+              <option value="type2">∫₀¹ x^A · [log(1/x)]^B dx</option>
+              <option value="type3">∫₀^∞ x^A / B^x dx</option>
+            </select>
+            <div id="gi-fields-type1" class="template-fields visible">
+              <p class="input-hint">∫₀^∞ x<sup>A</sup> · e<sup>−B·x<sup>C</sup></sup> dx → Γ((A+1)/C) / (C · B<sup>(A+1)/C</sup>)</p>
+              <div class="input-row dual">
+                <div class="input-field"><span class="field-label">A =</span><input type="text" class="calc-input" id="gi-a" placeholder="e.g. 1/4" autocomplete="off" /></div>
+                <div class="input-field"><span class="field-label">B =</span><input type="text" class="calc-input" id="gi-b" placeholder="e.g. 1" autocomplete="off" /></div>
+                <div class="input-field"><span class="field-label">C =</span><input type="text" class="calc-input" id="gi-c" placeholder="e.g. 1/2" autocomplete="off" /></div>
+              </div>
+              <p class="input-hint">Example: ∫₀^∞ ⁴√x · e^(−√x) dx → A=1/4, B=1, C=1/2</p>
+            </div>
+            <div id="gi-fields-type2" class="template-fields">
+              <p class="input-hint">∫₀¹ x<sup>A</sup> · [log(1/x)]<sup>B</sup> dx → Γ(B+1)/(A+1)<sup>(B+1)</sup></p>
+              <div class="input-row dual">
+                <div class="input-field"><span class="field-label">A =</span><input type="text" class="calc-input" id="gi-log-a" placeholder="e.g. 0" autocomplete="off" /></div>
+                <div class="input-field"><span class="field-label">B =</span><input type="text" class="calc-input" id="gi-log-b" placeholder="e.g. 4" autocomplete="off" /></div>
+              </div>
+            </div>
+            <div id="gi-fields-type3" class="template-fields">
+              <p class="input-hint">∫₀^∞ x<sup>A</sup> / B<sup>x</sup> dx → Γ(A+1) / (log B)<sup>(A+1)</sup></p>
+              <div class="input-row dual">
+                <div class="input-field"><span class="field-label">A =</span><input type="text" class="calc-input" id="gi-exp-a" placeholder="e.g. 2" autocomplete="off" /></div>
+                <div class="input-field"><span class="field-label">B =</span><input type="text" class="calc-input" id="gi-exp-b" placeholder="e.g. 2" autocomplete="off" /></div>
+              </div>
+              <p class="input-hint">Example: ∫₀^∞ x²/2^x dx → A=2, B=2</p>
+            </div>
+
+          </div>
+
+          <!-- Beta integral input (template-based) -->
+          <div class="input-group" id="input-beta-integral">
+            <label class="input-label">Select Beta Integral Type</label>
+            <select class="calc-select" id="beta-int-type">
+              <option value="power">∫₀¹ x^A · (1−x^N)^B dx</option>
+              <option value="range">∫₀^A x^M · (A−x)^N dx</option>
+              <option value="ab">∫ₐᵇ (x−a)^M · (b−x)^N dx</option>
+              <option value="trig">∫₀^(π/2) sin^M(θ) · cos^N(θ) dθ</option>
+            </select>
+            <div id="bi-fields-power" class="template-fields visible">
+              <p class="input-hint">∫₀¹ x<sup>A</sup>(1−x<sup>N</sup>)<sup>B</sup> dx → (1/N)·B((A+1)/N, B+1)</p>
+              <div class="input-row dual">
+                <div class="input-field"><span class="field-label">A =</span><input type="text" class="calc-input" id="bi-pw-a" placeholder="e.g. 3" autocomplete="off" /></div>
+                <div class="input-field"><span class="field-label">N =</span><input type="text" class="calc-input" id="bi-pw-n" placeholder="e.g. 2" autocomplete="off" /></div>
+                <div class="input-field"><span class="field-label">B =</span><input type="text" class="calc-input" id="bi-pw-b" placeholder="e.g. 1/2" autocomplete="off" /></div>
+              </div>
+            </div>
+            <div id="bi-fields-range" class="template-fields">
+              <p class="input-hint">∫₀<sup>A</sup> x<sup>M</sup>(A−x)<sup>N</sup> dx → A<sup>(M+N+1)</sup>·B(M+1, N+1)</p>
+              <div class="input-row dual">
+                <div class="input-field"><span class="field-label">M =</span><input type="text" class="calc-input" id="bi-rg-m" placeholder="e.g. 3" autocomplete="off" /></div>
+                <div class="input-field"><span class="field-label">N =</span><input type="text" class="calc-input" id="bi-rg-n" placeholder="e.g. 1/2" autocomplete="off" /></div>
+                <div class="input-field"><span class="field-label">A =</span><input type="text" class="calc-input" id="bi-rg-A" placeholder="e.g. 2" autocomplete="off" /></div>
+              </div>
+            </div>
+            <div id="bi-fields-ab" class="template-fields">
+              <p class="input-hint">∫ₐᵇ (x−a)<sup>M</sup>(b−x)<sup>N</sup> dx → (b−a)<sup>(M+N+1)</sup>·B(M+1, N+1)</p>
+              <div class="input-row dual">
+                <div class="input-field"><span class="field-label">M =</span><input type="text" class="calc-input" id="bi-ab-m" placeholder="e.g. 3" autocomplete="off" /></div>
+                <div class="input-field"><span class="field-label">N =</span><input type="text" class="calc-input" id="bi-ab-n" placeholder="e.g. 2" autocomplete="off" /></div>
+                <div class="input-field"><span class="field-label">a =</span><input type="text" class="calc-input" id="bi-ab-a" placeholder="e.g. 2" autocomplete="off" /></div>
+                <div class="input-field"><span class="field-label">b =</span><input type="text" class="calc-input" id="bi-ab-b" placeholder="e.g. 5" autocomplete="off" /></div>
+              </div>
+            </div>
+            <div id="bi-fields-trig" class="template-fields">
+              <p class="input-hint">∫₀<sup>π/2</sup> sin<sup>M</sup>θ · cos<sup>N</sup>θ dθ → ½·B((M+1)/2, (N+1)/2)</p>
+              <div class="input-row dual">
+                <div class="input-field"><span class="field-label">M =</span><input type="text" class="calc-input" id="bi-tr-m" placeholder="e.g. 4" autocomplete="off" /></div>
+                <div class="input-field"><span class="field-label">N =</span><input type="text" class="calc-input" id="bi-tr-n" placeholder="e.g. 3/2" autocomplete="off" /></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <button class="solve-btn" id="solve-btn">
+          <span class="solve-text">Solve Step-by-Step</span>
+          <span class="solve-icon">→</span>
+        </button>
+
+        <!-- Solution output -->
+        <div class="solution-area" id="solution-area">
+          <div class="solution-header">
+            <h3 class="solution-title">📘 Step-by-Step Solution</h3>
+            <button class="copy-btn" id="copy-btn" title="Copy solution">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              <span>Copy</span>
+            </button>
+          </div>
+          <div class="solution-steps" id="solution-steps"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Theory Section -->
+    <section id="theory" class="section section-alt">
+      <div class="section-header">
+        <h2 class="section-title">Mathematical <span class="gradient-text">Theory</span></h2>
+        <p class="section-desc">Key definitions, properties, and relationships.</p>
+      </div>
+
+      <div class="theory-grid">
+        <div class="theory-card" id="theory-gamma">
+          <div class="theory-icon">Γ</div>
+          <h3 class="theory-title">Gamma Function</h3>
+          <div class="theory-content">
+            <div class="theory-formula" id="theory-gamma-def"></div>
+            <h4>Key Properties</h4>
+            <ul class="theory-list" id="theory-gamma-props"></ul>
+          </div>
+        </div>
+
+        <div class="theory-card" id="theory-beta">
+          <div class="theory-icon">B</div>
+          <h3 class="theory-title">Beta Function</h3>
+          <div class="theory-content">
+            <div class="theory-formula" id="theory-beta-def"></div>
+            <h4>Key Properties</h4>
+            <ul class="theory-list" id="theory-beta-props"></ul>
+          </div>
+        </div>
+
+        <div class="theory-card wide" id="theory-relation">
+          <div class="theory-icon">≡</div>
+          <h3 class="theory-title">Gamma–Beta Relationship</h3>
+          <div class="theory-content">
+            <div class="theory-formula" id="theory-relation-formula"></div>
+            <p class="theory-note">This fundamental identity connects the two functions and is the primary tool for evaluating the Beta function using Gamma values.</p>
+          </div>
+        </div>
+
+        <div class="theory-card wide" id="theory-special">
+          <div class="theory-icon">★</div>
+          <h3 class="theory-title">Special &amp; Important Values</h3>
+          <div class="theory-content">
+            <div class="special-values-grid" id="special-values-grid"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Examples Section -->
+    <section id="examples" class="section">
+      <div class="section-header">
+        <h2 class="section-title">Try These <span class="gradient-text">Examples</span></h2>
+        <p class="section-desc">Click an example to auto-fill and solve.</p>
+      </div>
+      <div class="examples-grid" id="examples-grid"></div>
+    </section>
+
+    <!-- MATLAB Code Section -->
+    <section id="matlab" class="section section-alt">
+      <div class="section-header">
+        <h2 class="section-title">MATLAB <span class="gradient-text">Code</span></h2>
+        <p class="section-desc">Equivalent MATLAB implementations for your project.</p>
+      </div>
+      <div class="matlab-grid">
+        <div class="matlab-card" id="matlab-gamma-card">
+          <h3 class="matlab-title">Gamma Function in MATLAB</h3>
+          <pre class="matlab-code"><code>% Gamma function using built-in
+n = input('Enter n: ');
+result = gamma(n);
+fprintf('Γ(%g) = %g\n', n, result);
+
+% Gamma via factorial for positive integers
+if n == floor(n) && n > 0
+    result = factorial(n - 1);
+    fprintf('Γ(%d) = (%d)! = %d\n', n, n-1, result);
+end
+
+% Symbolic computation
+syms t
+f = t^(n-1) * exp(-t);
+result = int(f, t, 0, inf);
+disp(result);</code></pre>
+        </div>
+        <div class="matlab-card" id="matlab-beta-card">
+          <h3 class="matlab-title">Beta Function in MATLAB</h3>
+          <pre class="matlab-code"><code>% Beta function using built-in
+x = input('Enter x: ');
+y = input('Enter y: ');
+result = beta(x, y);
+fprintf('B(%g, %g) = %g\n', x, y, result);
+
+% Beta via Gamma functions
+result = gamma(x)*gamma(y)/gamma(x+y);
+fprintf('B(%g,%g) = Γ(%g)Γ(%g)/Γ(%g) = %g\n', ...
+        x, y, x, y, x+y, result);
+
+% Symbolic integral
+syms t
+f = t^(x-1) * (1-t)^(y-1);
+result = int(f, t, 0, 1);
+disp(result);</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="site-footer">
+      <div class="footer-content">
+        <img src="pccoe_logo.png" alt="PCCOE" class="footer-logo" />
+        <p class="footer-college">PIMPRI CHINCHWAD COLLEGE OF ENGINEERING</p>
+        <p class="footer-text">Gamma &amp; Beta Function Calculator — MATLAB Project</p>
+        <div class="footer-credits">
+          <span>Developed by <strong>Tejas Wandhekar</strong></span>
+          <span class="footer-sep">|</span>
+          <span>Guided by <strong>Prof. Nishi Gupta</strong></span>
+          <span class="footer-sep">|</span>
+          <span>Year: <strong>2025</strong></span>
+        </div>
+      </div>
+    </footer>
+
+  </div><!-- /main-site -->
+
+  <script src="math-engine.js"></script>
+  <script src="ocr-parser.js"></script>
+  <script src="app.js"></script>
+
+</body>
+</html>
